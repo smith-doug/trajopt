@@ -7,7 +7,24 @@ TRAJOPT_IGNORE_WARNINGS_POP
 
 #include <trajopt_sco/solver_utils.hpp>
 #include <trajopt_utils/logging.hpp>
+#include "trajopt_sco/backward.hpp"
 
+std::string get_trace(const std::string &msg = "")
+{
+  using namespace backward;
+  std::ostringstream ss;
+  ss << msg << "\n";
+  StackTrace stackTrace;
+  Printer printer;
+
+  stackTrace.load_here();
+  stackTrace.skip_n_firsts(2);  // The 1st 4 stack entries will be backward.hpp stuff.
+
+  printer.address = true;
+  printer.print(stackTrace, ss);
+
+  return ss.str();
+}
 namespace sco
 {
 void exprToEigen(const AffExpr& expr, Eigen::SparseVector<double>& sparse_vector, const int& n_vars)
@@ -21,7 +38,8 @@ void exprToEigen(const AffExpr& expr, Eigen::SparseVector<double>& sparse_vector
     {
       std::stringstream msg;
       msg << "Coefficient " << i << "has index " << i_var_index << " but n_vars is " << n_vars;
-      throw std::runtime_error(msg.str());
+      auto error_msg = get_trace(msg.str());
+      throw std::runtime_error(error_msg);
     }
     if (expr.coeffs[i] != 0.)
       sparse_vector.coeffRef(i_var_index) += expr.coeffs[i];
@@ -107,7 +125,8 @@ void exprToEigen(const AffExprVector& expr_vec,
       {
         std::stringstream msg;
         msg << "Coefficient " << i << "has index " << i_var_index << " but n_vars is " << n_vars;
-        throw std::runtime_error(msg.str());
+        auto error_msg = get_trace(msg.str());
+        throw std::runtime_error(error_msg);
       }
       if (expr.coeffs[j] != 0.)
       {

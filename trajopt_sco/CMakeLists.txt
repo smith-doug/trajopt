@@ -105,6 +105,12 @@ target_link_libraries(
          ${CMAKE_DL_LIBS}
          jsoncpp_lib
          OpenMP::OpenMP_CXX)
+
+target_link_libraries(
+  ${PROJECT_NAME}
+  PRIVATE bfd)
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE -DBACKWARD_HAS_BFD=1)
 target_compile_options(${PROJECT_NAME} PRIVATE ${TRAJOPT_COMPILE_OPTIONS_PRIVATE})
 target_compile_options(${PROJECT_NAME} PUBLIC ${TRAJOPT_COMPILE_OPTIONS_PUBLIC})
 target_compile_definitions(${PROJECT_NAME} PUBLIC ${TRAJOPT_COMPILE_DEFINITIONS})

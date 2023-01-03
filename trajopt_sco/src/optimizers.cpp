@@ -171,13 +171,13 @@ void Optimizer::initialize(const DblVec& x)
 BasicTrustRegionSQPParameters::BasicTrustRegionSQPParameters()
 {
   improve_ratio_threshold = 0.25;
-  min_trust_box_size = 1e-4;
-  min_approx_improve = 1e-4;
+  min_trust_box_size = 0.0001;
+  min_approx_improve = 0.0001;
   min_approx_improve_frac = static_cast<double>(-INFINITY);
   max_iter = 50;
   trust_shrink_ratio = 0.1;
   trust_expand_ratio = 1.5;
-  cnt_tolerance = 1e-4;
+  cnt_tolerance = 0.0001;
   max_merit_coeff_increases = 5;
   max_qp_solver_failures = 3;
   merit_coeff_increase_ratio = 10;
@@ -310,9 +310,10 @@ void BasicTrustRegionSQPResults::print() const
 {
   // Print Header
   std::printf("\n| %s |\n", std::string(75, '=').c_str());
-  std::printf("| %s %s %s |\n", std::string(29, ' ').c_str(), "ROS Industrial", std::string(30, ' ').c_str());
+  std::printf("| %s %s %s |\n", std::string(29, ' ').c_str(), "Optimizers ROS Industrial", std::string(30, ' ').c_str());
   std::printf("| %s %s %s |\n", std::string(25, ' ').c_str(), "TrajOpt Motion Planning", std::string(25, ' ').c_str());
   std::printf("| %s |\n", std::string(75, '=').c_str());
+  
 
   // Print Cost and Constraint Data
   std::printf("| %10s | %10s | %10s | %10s | %10s | %10s | -%15s \n",
@@ -793,7 +794,7 @@ OptStatus BasicTrustRegionSQP::optimize()
       }
       else if (iter >= param_.max_iter)
       {
-        LOG_INFO("iteration limit");
+        LOG_INFO("iteration limit optimizers.cpp");
         retval = OPT_SCO_ITERATION_LIMIT;
 
         if (results_.cnt_viols.empty() || vecMax(results_.cnt_viols) < param_.cnt_tolerance)

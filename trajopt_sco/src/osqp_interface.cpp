@@ -29,6 +29,7 @@ OSQPModelConfig::OSQPModelConfig()
   settings.polish = 1;
   settings.adaptive_rho = true;
   settings.verbose = SUPER_DEBUG_MODE;
+  // settings.linsys_solver = MKL_PARDISO_SOLVER;
 }
 
 Model::Ptr createOSQPModel(const ModelConfig::ConstPtr& config = nullptr)

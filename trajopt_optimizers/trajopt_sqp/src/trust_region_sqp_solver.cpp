@@ -93,7 +93,7 @@ void TrustRegionSQPSolver::solve(const QPProblem::Ptr& qp_problem)
 
       if (results_.overall_iteration >= params.max_iterations)
       {
-        CONSOLE_BRIDGE_logInform("Iteration limit");
+        CONSOLE_BRIDGE_logInform("Iteration limit trust_region_sqp_solver.cpp");
         status_ = SQPStatus::ITERATION_LIMIT;
         break;
       }
@@ -344,7 +344,7 @@ void TrustRegionSQPSolver::printStepInfo() const
 {
   // Print Header
   std::printf("\n| %s |\n", std::string(88, '=').c_str());
-  std::printf("| %s %s %s |\n", std::string(36, ' ').c_str(), "ROS Industrial", std::string(36, ' ').c_str());
+  std::printf("| %s %s %s |\n", std::string(36, ' ').c_str(), "TrustRegionSQPSolver ROS Industrial", std::string(36, ' ').c_str());
   std::printf("| %s %s %s |\n", std::string(32, ' ').c_str(), "TrajOpt Motion Planning", std::string(31, ' ').c_str());
   std::printf("| %s |\n", std::string(88, '=').c_str());
   std::printf("| %s %s (Box Size: %-3.9f) %s |\n",
