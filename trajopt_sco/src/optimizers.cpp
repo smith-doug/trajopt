@@ -37,7 +37,7 @@ std::ostream& operator<<(std::ostream& o, const OptResults& r)
 static DblVec evaluateCosts(const std::vector<Cost::Ptr>& costs, const DblVec& x)
 {
   DblVec out(costs.size());
-  #pragma omp parallel for
+#pragma omp parallel for
   for (size_t i = 0; i < costs.size(); ++i)
   {
     out[i] = costs[i]->value(x);
@@ -47,7 +47,7 @@ static DblVec evaluateCosts(const std::vector<Cost::Ptr>& costs, const DblVec& x
 static DblVec evaluateConstraintViols(const std::vector<Constraint::Ptr>& constraints, const DblVec& x)
 {
   DblVec out(constraints.size());
-  #pragma omp parallel for
+#pragma omp parallel for
   for (size_t i = 0; i < constraints.size(); ++i)
   {
     out[i] = constraints[i]->violation(x);
@@ -59,7 +59,7 @@ static std::vector<ConvexObjective::Ptr> convexifyCosts(const std::vector<Cost::
                                                         Model* model)
 {
   std::vector<ConvexObjective::Ptr> out(costs.size());
-  #pragma omp parallel for
+#pragma omp parallel for
   for (size_t i = 0; i < costs.size(); ++i)
   {
     out[i] = costs[i]->convex(x, model);
@@ -71,7 +71,7 @@ static std::vector<ConvexConstraints::Ptr> convexifyConstraints(const std::vecto
                                                                 Model* model)
 {
   std::vector<ConvexConstraints::Ptr> out(cnts.size());
-  #pragma omp parallel for
+#pragma omp parallel for
   for (size_t i = 0; i < cnts.size(); ++i)
   {
     out[i] = cnts[i]->convex(x, model);
@@ -108,7 +108,7 @@ static std::vector<std::string> getCostNames(const std::vector<Cost::Ptr>& costs
 static std::vector<std::string> getCntNames(const std::vector<Constraint::Ptr>& cnts)
 {
   std::vector<std::string> out(cnts.size());
-  #pragma omp parallel for
+#pragma omp parallel for
   for (size_t i = 0; i < cnts.size(); ++i)
     out[i] = cnts[i]->name();
   return out;
@@ -299,7 +299,7 @@ void BasicTrustRegionSQPResults::update(const OptResults& prev_opt_results,
   exact_merit_improve = old_merit - new_merit;
   merit_improve_ratio = exact_merit_improve / approx_merit_improve;
 
-  if (util::GetLogLevel() >= util::LevelInfo)
+  if (util::GetLogLevel() >= util::LevelDebug)
   {
     LOG_INFO(" ");
     print();
@@ -310,10 +310,10 @@ void BasicTrustRegionSQPResults::print() const
 {
   // Print Header
   std::printf("\n| %s |\n", std::string(75, '=').c_str());
-  std::printf("| %s %s %s |\n", std::string(29, ' ').c_str(), "Optimizers ROS Industrial", std::string(30, ' ').c_str());
+  std::printf(
+      "| %s %s %s |\n", std::string(29, ' ').c_str(), "Optimizers ROS Industrial", std::string(30, ' ').c_str());
   std::printf("| %s %s %s |\n", std::string(25, ' ').c_str(), "TrajOpt Motion Planning", std::string(25, ' ').c_str());
   std::printf("| %s |\n", std::string(75, '=').c_str());
-  
 
   // Print Cost and Constraint Data
   std::printf("| %10s | %10s | %10s | %10s | %10s | %10s | -%15s \n",
